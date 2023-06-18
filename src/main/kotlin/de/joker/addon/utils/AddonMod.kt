@@ -9,6 +9,7 @@ import de.miraculixx.challenge.api.utils.Icon
 import de.miraculixx.challenge.api.utils.IconNaming
 import de.joker.addon.MAddon
 import de.joker.addon.mods.BlockRandomizer
+import de.joker.addon.mods.DropsRandomizer
 import java.util.*
 
 /**
@@ -16,7 +17,8 @@ import java.util.*
  * @param uuid The unique ID. Don't choose a simple hard coded [uuid], it could conflict with other addons
  */
 enum class AddonMod(val uuid: UUID) {
-    BLOCK_RANDOMIZER_EXTENDED(UUID.randomUUID());
+    BLOCK_RANDOMIZER_EXTENDED(UUID.randomUUID()),
+    DROPS_RANDOMIZER_EXTENDED(UUID.randomUUID());
 
     /**
      * Holds all mod data. Should only be called once at startup to ship all data to the MUtils API
@@ -28,7 +30,15 @@ enum class AddonMod(val uuid: UUID) {
                 uuid,
                 BlockRandomizer(),
                 AddonManager.getSettings(this),
-                Icon("ENDER_CHEST", naming = IconNaming(cmp("Block Randomizer"), listOf(cmp("An advanced Block Randomizer"), cmp("interactions")))),
+                Icon("DIRT_BLOCK", naming = IconNaming(cmp("Block Randomizer"), listOf(cmp("An advanced Block Randomizer"), cmp("interactions")))),
+                setOf(ChallengeTags.RANDOMIZER),
+                MAddon.addonName
+            )
+            DROPS_RANDOMIZER_EXTENDED -> CustomChallengeData(
+                uuid,
+                DropsRandomizer(),
+                AddonManager.getSettings(this),
+                Icon("ENDER_CHEST", naming = IconNaming(cmp("Drop Randomizer"), listOf(cmp("An advanced Drop Randomizer"), cmp("interactions")))),
                 setOf(ChallengeTags.RANDOMIZER),
                 MAddon.addonName
             )
@@ -52,7 +62,16 @@ enum class AddonMod(val uuid: UUID) {
                         "player" to IconNaming(cmp("Per Player"), listOf(cmp("Randomizes all blocks per player"))),
                     ),
                 )
-
+            DROPS_RANDOMIZER_EXTENDED -> ChallengeData(
+                mapOf(
+                    "random" to ChallengeBoolSetting("DIAMOND_PICKAXE", false),
+                    "player" to ChallengeBoolSetting("REDSTONE", false),
+                ),
+                mapOf(
+                    "random" to IconNaming(cmp("Full Random"), listOf(cmp("Randomizes all drops"))),
+                    "player" to IconNaming(cmp("Per Player"), listOf(cmp("Randomizes all drops per player"))),
+                ),
+            )
         }
     }
 }
