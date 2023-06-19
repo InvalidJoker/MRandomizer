@@ -16,6 +16,10 @@ import org.bukkit.loot.LootContext
 import org.bukkit.loot.LootTables
 import kotlin.random.Random
 
+/**
+ * DropsRandomizer
+ * @author InvalidJokerDE, Miraculixx
+ */
 class DropsRandomizer : Challenge {
     private var random: Boolean = false
     private var playerRandom: Boolean = false

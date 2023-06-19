@@ -17,6 +17,10 @@ import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.inventory.ItemStack
 import kotlin.random.Random
 
+/**
+ * BlockRandomizer
+ * @author InvalidJokerDE, Miraculixx
+ */
 class BlockRandomizer : Challenge {
     private var random: Boolean = false
     private var playerRandom: Boolean = false
