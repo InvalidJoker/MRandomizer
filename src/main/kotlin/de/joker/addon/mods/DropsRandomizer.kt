@@ -30,7 +30,7 @@ class DropsRandomizer : Challenge {
     private val playerList: MutableMap<Player, MutableList<EntityType>> = mutableMapOf() // player, list
 
     override fun start(): Boolean {
-        val settings = AddonManager.getSettings(AddonMod.BLOCK_RANDOMIZER_EXTENDED).settings
+        val settings = AddonManager.getSettings(AddonMod.DROPS_RANDOMIZER_EXTENDED).settings
         random = settings["random"]?.toBool()?.getValue() ?: false
         playerRandom = settings["player"]?.toBool()?.getValue() ?: false
         val rnd = Random(worlds.first().seed)
