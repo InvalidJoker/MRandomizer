@@ -2,7 +2,7 @@
 An Extension for the [MUtils](https://mutils.net/)
 
 ## ⚠️ Important
-This Addon will soon be replaced by the [MChallenges](https://github.com/InvalidJokerDE/MChallenges) Addon
+The Addon has been replaces by [MChallenges](https://github.com/InvalidJokerDE/MChallenges)
 
 ## 🚀 Activate the Extension
 Use the `/challenge addons` command and select the Extended Randomizer option.
