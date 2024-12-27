@@ -1,9 +1,0 @@
-name: MRandomizer
-load: STARTUP
-version: 1.0.0
-main: de.joker.addon.MAddon
-api-version: 1.16
-authors: [ InvalidJokerDE ]
-description: MUtils Addon for randomizing blocks
-softdepend: [ MUtils-Challenge ]
-

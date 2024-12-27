@@ -1,10 +1,12 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
-    kotlin("jvm") version "1.8.20"
-    kotlin("plugin.serialization") version "1.8.20"
-    id("io.papermc.paperweight.userdev") version "1.5.0"
-    id("xyz.jpenilla.run-paper") version "1.1.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
+    id("io.papermc.paperweight.userdev") version "2.0.0-20241223.032535-116"
+    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "de.joker"
@@ -15,32 +17,29 @@ repositories {
 }
 
 dependencies {
+    paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
+
+    implementation("net.axay:kspigot:1.21.0")
+
     // The MChallenge API
-    compileOnly("de.miraculixx:challenge-api:1.2.1")
+    compileOnly("de.miraculixx:challenge-api:1.5.0")
 
-    // The KSpigot version is not related to the game version
-    implementation("net.axay:kspigot:1.19.2")
+    library(kotlin("stdlib"))
+    library("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.+")
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.+")
 
-    // Define your minecraft version
-    paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
-
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     compileOnly("net.kyori:adventure-text-serializer-gson:4.13.1")
+
 }
 
 
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {
     shadowJar {
-        dependencies {
-            include(dependency("net.axay:kspigot:1.19.2"))
-        }
         archiveFileName.set("MRandomizer.jar")
     }
     assemble {
@@ -49,13 +48,28 @@ tasks {
     }
     compileJava {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
     compileKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
 
     runServer {
-        minecraftVersion("1.19.4")
+        minecraftVersion("1.20.1")
     }
+}
+
+
+bukkit {
+    main = "de.joker.addon.MAddon"
+    apiVersion = "1.16"
+    foliaSupported = false
+    description = "MUtils Addon for randomizing blocks"
+    website = "https://mutils.net/ch/info"
+    authors = listOf("InvalidJoker")
+
+    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
+
+    depend = listOf()
+    softDepend = listOf("MUtils-Challenge")
 }
