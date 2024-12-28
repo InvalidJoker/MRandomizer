@@ -23,7 +23,7 @@ import kotlin.random.Random
  * @author InvalidJokerDE, Miraculixx
  */
 class BlockRandomizer : Challenge {
-    private var random: Boolean = false
+    private var fullRandom: Boolean = false
     private var playerRandom: Boolean = false
     private val map: MutableMap<Material, Material> = mutableMapOf() // map
     private val list: MutableList<Material> = mutableListOf() // list
@@ -33,9 +33,9 @@ class BlockRandomizer : Challenge {
     override fun start(): Boolean {
         val rnd = Random(worlds.first().seed)
         val settings = AddonManager.getSettings(AddonMod.BLOCK_RANDOMIZER_EXTENDED).settings
-        random = settings["random"]?.toBool()?.getValue() ?: false
+        fullRandom = settings["random"]?.toBool()?.getValue() ?: false
         playerRandom = settings["player"]?.toBool()?.getValue() ?: false
-        if (!random) {
+        if (!fullRandom) {
             if (playerRandom) {
                 for (p in Bukkit.getOnlinePlayers()) {
                     val drops = Material.entries.filter { it.isItem }.shuffled(rnd)
@@ -142,12 +142,14 @@ class BlockRandomizer : Challenge {
 
     private fun dropItem(block: Block, player: Player? = null) {
         lateinit var material: Material
-        if (random) {
+        if (fullRandom) {
             material = if (playerRandom && player != null) {
-                val p = playerList[player]!!
-                p[Random.nextInt(0, list.size - 1)]
+                val pList = playerList[player].orEmpty()
+                if (pList.isNotEmpty()) pList[Random.nextInt(pList.size)]
+                else Material.STONE
             } else {
-                list[Random.nextInt(0, list.size - 1)]
+                if (list.isNotEmpty()) list[Random.nextInt(list.size)]
+                else Material.STONE
             }
         } else {
             val mat = block.type
