@@ -11,6 +11,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
+import org.bukkit.entity.TNTPrimed
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.entity.EntityExplodeEvent
@@ -37,12 +38,12 @@ class BlockRandomizer : Challenge {
         if (!random) {
             if (playerRandom) {
                 for (p in Bukkit.getOnlinePlayers()) {
-                    val drops = Material.values().filter { it.isItem }.shuffled(rnd)
+                    val drops = Material.entries.filter { it.isItem }.shuffled(rnd)
                     var block = mutableListOf<Material>()
                     block.shuffle(rnd)
                     drops.forEach { dropMaterial ->
                         if (block.isEmpty()) {
-                            block = Material.values().filter { it.isBlock }.toMutableList()
+                            block = Material.entries.filter { it.isBlock }.toMutableList()
                             block.shuffle(rnd)
                         }
                         if (!playerMap.containsKey(p)) {
@@ -54,12 +55,12 @@ class BlockRandomizer : Challenge {
                     }
                 }
             } else {
-                val drops = Material.values().filter { it.isItem }.shuffled(rnd)
+                val drops = Material.entries.filter { it.isItem }.shuffled(rnd)
                 var block = mutableListOf<Material>()
                 block.shuffle(rnd)
                 drops.forEach { dropMaterial ->
                     if (block.isEmpty()) {
-                        block = Material.values().filter { it.isBlock }.toMutableList()
+                        block = Material.entries.filter { it.isBlock }.toMutableList()
                         block.shuffle(rnd)
                     }
                     map[block[0]] = dropMaterial
@@ -73,11 +74,11 @@ class BlockRandomizer : Challenge {
                         playerList[p] = mutableListOf()
                     }
                     val listX = playerList[p]!!
-                    listX.addAll(Material.values())
+                    listX.addAll(Material.entries.toTypedArray())
                     listX.shuffle(rnd)
                 }
             } else {
-                list.addAll(Material.values())
+                list.addAll(Material.entries.toTypedArray())
                 list.shuffle(rnd)
             }
         }
@@ -105,7 +106,7 @@ class BlockRandomizer : Challenge {
 
     private val onBlockBreak = listen<BlockBreakEvent>(register = false) {
         it.isDropItems = false
-        dropItem(it.block)
+        dropItem(it.block, it.player)
     }
 
     private val onExplode = listen<BlockExplodeEvent>(register = false) {
@@ -117,10 +118,25 @@ class BlockRandomizer : Challenge {
     }
 
     private val onExplode2 = listen<EntityExplodeEvent>(register = false) {
+        val entity = it.entity
+        if (entity is TNTPrimed) {
+            val source = entity.source
+
+            if (source is Player) {
+                it.blockList().forEach { block ->
+                    dropItem(block, source)
+                    block.type = Material.AIR
+                }
+                it.blockList().clear()
+                return@listen
+            }
+        }
+
         it.blockList().forEach { block ->
             dropItem(block)
             block.type = Material.AIR
         }
+
         it.blockList().clear()
     }
 
