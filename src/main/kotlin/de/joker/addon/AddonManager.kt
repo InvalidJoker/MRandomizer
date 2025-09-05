@@ -6,10 +6,9 @@ import de.joker.addon.utils.AddonMod
 import de.joker.addon.utils.cmp
 import de.joker.addon.utils.plus
 import de.joker.addon.utils.prefix
-import kotlinx.serialization.decodeFromString
+import de.miraculixx.kpaper.extensions.console
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import net.axay.kspigot.extensions.console
 import net.kyori.adventure.text.format.NamedTextColor
 import java.io.File
 
@@ -63,7 +62,7 @@ object AddonManager {
         }
 
         // Add all mods to MUtils
-        AddonMod.values().forEach { mod ->
+        AddonMod.entries.forEach { mod ->
             val prodData = api.addChallenge(mod.uuid, mod.getModData())
             if (prodData == null) {
                 console.sendMessage(prefix + cmp("Failed to inject ${mod.name} to MChallenge!"))

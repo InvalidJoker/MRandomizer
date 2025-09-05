@@ -1,10 +1,10 @@
 package de.joker.addon
 
-import net.axay.kspigot.main.KSpigot
+import de.miraculixx.kpaper.main.KPaper
 
-class MAddon : KSpigot() {
+class MAddon : KPaper() {
     companion object {
-        lateinit var INSTANCE: KSpigot
+        lateinit var INSTANCE: KPaper
         lateinit var addonName: String
     }
 

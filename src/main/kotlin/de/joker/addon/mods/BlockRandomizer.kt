@@ -3,10 +3,10 @@ package de.joker.addon.mods
 import de.joker.addon.AddonManager
 import de.joker.addon.utils.AddonMod
 import de.miraculixx.challenge.api.modules.challenges.Challenge
-import net.axay.kspigot.event.listen
-import net.axay.kspigot.event.register
-import net.axay.kspigot.event.unregister
-import net.axay.kspigot.extensions.worlds
+import de.miraculixx.kpaper.event.listen
+import de.miraculixx.kpaper.event.register
+import de.miraculixx.kpaper.event.unregister
+import de.miraculixx.kpaper.extensions.worlds
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
